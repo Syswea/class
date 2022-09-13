@@ -62,14 +62,20 @@ void printList_seq(PseqList plist)
         printf("%d ",plist->element[i]);
 }
 
+int max(int a, int b) {
+    return a > b ? a : b;
+}
+
 //第一关:求顺序线性表中连续子表（最少有一个元素）的最大和并输出
 int seqMaxSum(PseqList plist)
 {
     int n = plist->curNum;
-    int MaxSum = plist->element[0];
+    int MaxSum = 0;
+    int Sum = 0;
     for (int i = 0; i < n; i ++ ) {
         int x = plist->element[i];
-        MaxSum = max(MaxSum + x, x);
+        Sum = max(Sum + x, x);
+        MaxSum = max(Sum, MaxSum);
     }
     return MaxSum;
 }
@@ -81,37 +87,19 @@ int findMinNumber(PseqList plist)
     int has[100000] = {};
     for (int i = 0; i < plist->curNum; i ++ ) {
         int x = plist->element[i];
-        has[x] = 1;
+        has[x + 100] = 1;
     }
-    for (int i = 1; i < 100000; i ++ ) if (has[i] == 0) return i;
+    for (int i = 1; i < 100000; i ++ ) if (has[i + 100] == 0) return i;
 }
 
 //第三关：找出给定目标值target在有序线性表中出现的起始位置和结束位置
 void findPos(PseqList plist,int target, int *pos)
 {//起始位置放在pos[0], 结束位置放在pos[1]
-    int *a = plist->element;
-    int n = plist->curNum;
-    int l = 0, r = n - 1;
-    while (l < r) {
-        int mid = l + r >> 1;
-        if (a[mid] < target) l = mid + 1;
-        else r = mid;
-    }
-    pos[0] = l;
-    l = 0, r = n - 1;
-    while (l < r) {
-        int mid = l + r + 1 >> 1;
-        if (a[mid] <= target) l = mid;
-        else r = mid - 1;
-    }
-    pos[1] = l;
-}
-
-int main () {
-    int n; scanf ("%d", &n);
-    PseqList plist = createNullList_seq(n);
-    for (int i = 1; i <= n; i ++ ) {
-        int x; scanf ("%d", &x);
-        insertP_tail(plist, x);
+    pos[0] = pos[1] = -1;
+    for (int i = 0; i < plist->curNum; i ++ ) {
+        if (plist->element[i] == target) {
+            if (pos[0] == -1) pos[0] = i;
+            pos[1] = i;
+        }
     }
 }
