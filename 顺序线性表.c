@@ -41,7 +41,6 @@ int insertP_tail(PseqList plist , int x)
     plist->element[plist->curNum] = x ;
     plist->curNum++;
     return 1;
-
 }
 
 /*回收线性表占用的空间*/
