@@ -11,9 +11,11 @@ struct Node {
 typedef struct Node *LinkList;
 
 /*
-带头节点就是 llink -> link 不存储值
-不带头节点就是 llink -> link 存储值
+带头节点就是 llink 不存储值
+不带头节点就是 llink 存储值
 */
+
+//以下为带头写法
 
 LinkList createNullList_link () {
     LinkList llink = (LinkList)malloc (sizeof (struct Node));
@@ -34,12 +36,21 @@ PNode locate_link (LinkList llink, Datatype x) {
     return p;
 }
 
-PNode locatePre_link (LinkList llink, Datatype x) {
+PNode locatePreV_link (LinkList llink, Datatype x) {
     PNode p;
     if (llink == NULL) return NULL;
     p = llink;
     while (p -> link -> link != NULL && p -> link -> info != x) p = p -> link;
     if (p -> link -> info != x) return NULL;
+    return p;
+}
+
+PNode locatePreP_link (LinkList llink, PNode x) {
+    PNode p;
+    if (llink == NULL) return NULL;
+    p = llink;
+    while (p -> link -> link != NULL && p -> link != x) p = p -> link;
+    if (p -> link != x) return NULL;
     else return p;
 }
 
@@ -54,7 +65,7 @@ int insertPost_link (PNode p, Datatype x) {
 }
 
 int deletV_link (LinkList llink, Datatype x) {
-    PNode p = locatePre_link(llink, x);
+    PNode p = locatePreV_link(llink, x);
     if (p == NULL) {
         printf ("No Data\n");
         return 0;
@@ -66,7 +77,7 @@ int deletV_link (LinkList llink, Datatype x) {
 }
 
 int deletP_link (LinkList llink, PNode x) {
-    PNode p = locatePre_link (llink, x -> info);
+    PNode p = locatePreP_link (llink, x);
     if (p == NULL) {
         printf ("No Data\n");
         return 0;
