@@ -34,5 +34,6 @@ int main () {
             cout << f[i][j] << ' ' ;
         cout << endl;
     }
+    ;;
     return 0;
 }
